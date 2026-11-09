@@ -439,7 +439,7 @@ noscript p{background:var(--b-soft);padding:12px 16px;border-radius:12px}
             <div class="stepper" role="group" aria-label="조 수">
               <span>조 수</span>
               <button type="button" class="step-btn" id="gcMinus" aria-label="조 하나 줄이기">−</button>
-              <b id="gcVal">6</b>
+              <b id="gcVal">7</b>
               <button type="button" class="step-btn" id="gcPlus" aria-label="조 하나 늘리기">+</button>
             </div>
           </div>
@@ -629,7 +629,7 @@ noscript p{background:var(--b-soft);padding:12px 16px;border-radius:12px}
   const blankGroup = () => ({ o: [0, 0, 0], cells: [0, 0, 0, 0, 0, 0, 0, 0, 0], seq: [] });
   function defaults() {
     return {
-      tab: 1, showRef: true, theme: 'auto', groupCount: 6, current: 0, classEvent: 0,
+      ver: 2, tab: 1, showRef: true, theme: 'auto', groupCount: 7, current: 0, classEvent: 0,
       groups: Array.from({ length: MAX_GROUPS }, blankGroup),
       sim: { players: 2, n: 10000, mode: 'single', event: 0, speed: 'normal', log: true, zoom: false }
     };
@@ -640,7 +640,9 @@ noscript p{background:var(--b-soft);padding:12px 16px;border-radius:12px}
     s.tab = clampInt(p.tab, 1, 3, 1);
     s.showRef = p.showRef !== false;
     s.theme = ['auto', 'light', 'dark'].includes(p.theme) ? p.theme : 'auto';
-    s.groupCount = clampInt(p.groupCount, 1, MAX_GROUPS, 6);
+    s.groupCount = clampInt(p.groupCount, 1, MAX_GROUPS, 7);
+    // 예전 버전의 기본값(6조)으로 저장된 경우에만 7조로 올림. 직접 바꾼 조 수와 기록은 그대로 둠
+    if (!(p.ver >= 2) && s.groupCount === 6) s.groupCount = 7;
     s.current = clampInt(p.current, 0, s.groupCount - 1, 0);
     s.classEvent = clampInt(p.classEvent, 0, 2, 0);
     if (Array.isArray(p.groups)) {
